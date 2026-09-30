@@ -46,6 +46,11 @@ radial-gradient(circle at 75% 30%,#0e5680 0,#081522 34%,#04070c 75%)}
 @media(max-width:800px){.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:220px}.gallery .g1{grid-row:span 2}.gallery .g4{grid-column:1/3}.pricing{grid-template-columns:1fr}}
 
 </style>
+
+<style>
+.payment-box{max-width:900px;margin:0 auto;background:linear-gradient(145deg,#101b28,#071019);border:1px solid #20364a;border-radius:22px;padding:28px;box-shadow:0 20px 60px #0006}.payment-methods{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}.pay-method{background:#0a1119;border:1px solid #263b4d;border-radius:15px;padding:18px}.pay-method strong{display:block;color:#fff;font-size:18px;margin-bottom:6px}.pay-number{font-size:24px;font-weight:900;letter-spacing:1px;color:#16a7ff;word-break:break-word}.pay-note{color:#aeb9c6;font-size:14px;margin-top:5px}.pay-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.pay-step{background:#0c151f;border:1px solid #1d2b3b;border-radius:12px;padding:16px}.pay-step b{color:#16a7ff}.plan-select{display:grid;grid-template-columns:1fr 1fr;gap:12px}.plan-btn{width:100%;border:1px solid #294257;background:#0b131d;color:#fff;border-radius:12px;padding:15px;font-weight:900;cursor:pointer}.plan-btn.active{border-color:#16a7ff;background:#0d2638;box-shadow:0 0 0 1px #16a7ff33}.form-gate{display:none;margin-top:20px;padding:20px;border:1px solid #16a7ff55;border-radius:15px;background:#07131d}.form-gate.show{display:block}.selected-plan{color:#16a7ff;font-weight:900}.form-link{display:inline-block;margin-top:12px;padding:14px 22px;border-radius:9px;background:#16a7ff;color:#04111a;font-weight:900}.copy-btn{margin-top:10px;border:1px solid #31536b;background:#0b131d;color:#fff;border-radius:8px;padding:8px 12px;cursor:pointer}.small-warning{font-size:12px;color:#8f9eac;margin-top:14px}
+@media(max-width:800px){.payment-methods,.pay-steps,.plan-select{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <nav class="nav"><div class="navin"><div class="logo">ONLINE<span>COACH</span></div><div class="navlinks"><a href="#coaching">Coaching</a><a href="#story">My Story</a><a href="#process">Process</a><a href="#pricing">Plans</a><a href="#questions">Assessment</a><a href="#start">Start</a></div></div></nav>
@@ -104,7 +109,7 @@ radial-gradient(circle at 75% 30%,#0e5680 0,#081522 34%,#04070c 75%)}
 <li>Progress Tracking</li>
 <li>Plan Adjustments</li>
 </ul>
-<a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdbDltVmH_emNG_RhWwYd9LlKiNTVjq_drOxnHqLVMSdGc_hg/viewform?usp=publish-editor" target="_blank">START NOW →</a>
+<a class="btn" href="#payment">START NOW →</a>
 </div>
 <div class="price featured">
 <div class="badge">SPECIAL OFFER</div>
@@ -118,11 +123,39 @@ radial-gradient(circle at 75% 30%,#0e5680 0,#081522 34%,#04070c 75%)}
 <li>Progress Tracking</li>
 <li>Plan Adjustments</li>
 </ul>
-<a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdbDltVmH_emNG_RhWwYd9LlKiNTVjq_drOxnHqLVMSdGc_hg/viewform?usp=publish-editor" target="_blank">GET THE OFFER →</a>
+<a class="btn" href="#payment">GET THE OFFER →</a>
 </div>
 </div>
 </div>
 </section>
+
+
+<section class="section" id="payment">
+<div class="wrap">
+<div class="eyebrow">SECURE YOUR COACHING</div>
+<h2>Choose your plan & complete payment.</h2>
+<div class="payment-box">
+<p class="muted ar">اختار الباقة، حوّل قيمة الباقة على الرقم التالي، وبعد التحويل افتح الفورم وابعث بياناتك ورقم العملية عشان أراجع الدفع وأبدأ معاك.</p>
+<div class="payment-methods">
+<div class="pay-method"><strong>InstaPay</strong><div class="pay-number">01114856016</div><div class="pay-note">نفس الرقم للتحويل على InstaPay</div><button class="copy-btn" type="button" data-copy="01114856016">Copy number</button></div>
+<div class="pay-method"><strong>Wallet</strong><div class="pay-number">01114856016</div><div class="pay-note">نفس الرقم للتحويل على المحفظة</div><button class="copy-btn" type="button" data-copy="01114856016">Copy number</button></div>
+</div>
+<div class="pay-steps">
+<div class="pay-step"><b>01</b><p class="muted">اختار الباقة المناسبة ليك.</p></div>
+<div class="pay-step"><b>02</b><p class="muted">حوّل المبلغ على InstaPay أو المحفظة.</p></div>
+<div class="pay-step"><b>03</b><p class="muted">افتح الفورم وسجّل رقم العملية بعد التحويل.</p></div>
+</div>
+<div class="plan-select">
+<button class="plan-btn" type="button" data-plan="1 Month — 350 EGP">1 MONTH — 350 EGP</button>
+<button class="plan-btn" type="button" data-plan="3 Months — 800 EGP">3 MONTHS — 800 EGP</button>
+</div>
+<div class="form-gate" id="formGate">
+<strong>الباقة المختارة: <span class="selected-plan" id="selectedPlan"></span></strong>
+<p class="muted ar">بعد ما تعمل التحويل، افتح الفورم من الزر ده واكتب رقم العملية/مرجع التحويل في المكان المخصص له.</p>
+<a class="form-link" id="formLink" href="https://docs.google.com/forms/d/e/1FAIpQLSdbDltVmH_emNG_RhWwYd9LlKiNTVjq_drOxnHqLVMSdGc_hg/viewform?usp=publish-editor" target="_blank" rel="noopener">OPEN TRAINING FORM →</a>
+<p class="small-warning ar">ملاحظة: الموقع نفسه لا يستطيع التحقق تلقائيًا من التحويل البنكي/المحفظة بدون نظام دفع خارجي. لذلك يتم تأكيد التحويل من خلال رقم العملية قبل بدء المتابعة.</p>
+</div>
+</div></div></section>
 
 <section class="section dark" id="questions"><div class="wrap">
 <div class="eyebrow">TRAINING ASSESSMENT</div><h2>Before I build your plan.</h2>
@@ -151,8 +184,27 @@ radial-gradient(circle at 75% 30%,#0e5680 0,#081522 34%,#04070c 75%)}
 <section class="section cta" id="start"><div class="wrap">
 <div class="eyebrow">READY?</div><h2>Let's build a better you.</h2>
 <p class="muted">ابدأ بالـ assessment، وبعدها نحدد الخطوة المناسبة ليك.</p>
-<a class="btn" href="https://docs.google.com/forms/d/e/1FAIpQLSdbDltVmH_emNG_RhWwYd9LlKiNTVjq_drOxnHqLVMSdGc_hg/viewform?usp=publish-editor" target="_blank">START YOUR ASSESSMENT →</a>
+<a class="btn" href="#payment">START YOUR ASSESSMENT →</a>
 </div></section>
 
 <footer>ONLINE COACH • TRAINING • NUTRITION • FOLLOW-UP</footer>
+
+<script>
+(function(){
+  const buttons=document.querySelectorAll('.plan-btn');
+  const gate=document.getElementById('formGate');
+  const selected=document.getElementById('selectedPlan');
+  buttons.forEach(btn=>btn.addEventListener('click',()=>{
+    buttons.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    selected.textContent=btn.dataset.plan;
+    gate.classList.add('show');
+    gate.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }));
+  document.querySelectorAll('.copy-btn').forEach(btn=>btn.addEventListener('click',async()=>{
+    const value=btn.dataset.copy;
+    try{await navigator.clipboard.writeText(value);btn.textContent='Copied ✓';setTimeout(()=>btn.textContent='Copy number',1400)}catch(e){btn.textContent=value}
+  }));
+})();
+</script>
 </body></html>
