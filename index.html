@@ -115,6 +115,17 @@ footer{padding:25px 0;border-top:1px solid var(--line);color:var(--muted);font-s
  .head h2{font-size:34px}
 }
 </style>
+
+<!-- Google Analytics 4 — Ahmed Coaching -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N6Q9N9ZG00"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-N6Q9N9ZG00');
+</script>
+<!-- End Google Analytics 4 -->
+
 </head>
 <body>
 
@@ -229,4 +240,58 @@ footer{padding:25px 0;border-top:1px solid var(--line);color:var(--muted);font-s
 <script>
 function copyNum(v,b){navigator.clipboard.writeText(v).then(()=>{let t=b.textContent;b.textContent='COPIED ✓';setTimeout(()=>b.textContent=t,1300)})}
 </script>
+
+<script>
+(function () {
+  function track(name, params) {
+    if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+  }
+
+  // Track important coaching funnel clicks.
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('a, button');
+    if (!el) return;
+
+    var label = (el.innerText || el.getAttribute('aria-label') || '').trim().toLowerCase();
+    var href = (el.getAttribute('href') || '').toLowerCase();
+
+    if (label.includes('start coaching') || label.includes('ابدأ') || label.includes('start')) {
+      track('start_coaching');
+    }
+
+    if (href.includes('docs.google.com/forms')) {
+      track('open_training_form');
+    }
+
+    if (label.includes('350') || label.includes('1 month') || label.includes('شهر')) {
+      track('select_plan', { plan: '1_month' });
+    }
+
+    if (label.includes('800') || label.includes('3 month') || label.includes('3 months') || label.includes('3 شهور')) {
+      track('select_plan', { plan: '3_months' });
+    }
+  });
+
+  // Track when the payment area is actually viewed.
+  var paymentSelectors = ['#payment', '#payments', '.payment', '.payments'];
+  var paymentEl = null;
+  for (var i = 0; i < paymentSelectors.length; i++) {
+    paymentEl = document.querySelector(paymentSelectors[i]);
+    if (paymentEl) break;
+  }
+
+  if (paymentEl && 'IntersectionObserver' in window) {
+    var sent = false;
+    var observer = new IntersectionObserver(function (entries) {
+      if (!sent && entries.some(function (entry) { return entry.isIntersecting; })) {
+        sent = true;
+        track('payment_view');
+        observer.disconnect();
+      }
+    }, { threshold: 0.25 });
+    observer.observe(paymentEl);
+  }
+})();
+</script>
+
 </body></html>
