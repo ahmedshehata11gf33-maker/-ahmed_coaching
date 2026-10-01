@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ahmed — Private Visitors</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Tahoma,sans-serif;background:#0b1020;color:#eef3ff}
+.wrap{max-width:1050px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:24px}
+h1{margin:0;font-size:26px}.muted{color:#9ba8bf}.card{background:#111a2d;border:1px solid #23304a;border-radius:18px;padding:22px;box-shadow:0 12px 35px #0004}
+.login{max-width:430px;margin:10vh auto}.field{margin:14px 0}label{display:block;margin-bottom:7px;color:#b9c5da}
+input{width:100%;padding:13px;border-radius:10px;border:1px solid #33415f;background:#0b1221;color:#fff;font-size:15px}
+button{border:0;border-radius:10px;padding:12px 18px;background:#3b82f6;color:white;font-weight:700;cursor:pointer}
+button.secondary{background:#26334d}.error{color:#ff8d8d;margin-top:10px}.hidden{display:none}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.stat b{display:block;font-size:32px;margin-top:8px}
+table{width:100%;border-collapse:collapse;margin-top:16px}th,td{text-align:right;padding:12px;border-bottom:1px solid #26334a}th{color:#9ba8bf}
+@media(max-width:700px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section id="login" class="card login">
+    <h1>Ahmed Admin</h1>
+    <p class="muted">إحصائيات الزوار — خاصة بيك فقط</p>
+    <div class="field"><label>البريد الإلكتروني</label><input id="email" type="email" autocomplete="username"></div>
+    <div class="field"><label>كلمة السر</label><input id="password" type="password" autocomplete="current-password"></div>
+    <button id="loginBtn">دخول</button>
+    <div id="loginError" class="error"></div>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="top">
+      <div><h1>Visitor Analytics</h1><div class="muted">الإحصائيات دي مش ظاهرة لزوار الموقع</div></div>
+      <button id="logoutBtn" class="secondary">تسجيل خروج</button>
+    </div>
+    <div class="grid">
+      <div class="card stat"><div class="muted">إجمالي الزيارات</div><b id="total">—</b></div>
+      <div class="card stat"><div class="muted">زيارات اليوم</div><b id="today">—</b></div>
+      <div class="card stat"><div class="muted">مصادر الزيارات</div><b id="sources">—</b></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2>آخر الزيارات</h2>
+      <table><thead><tr><th>التاريخ</th><th>المصدر</th><th>الصفحة</th></tr></thead><tbody id="rows"></tbody></table>
+    </div>
+  </section>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL="https://zqrjaseceqgmgtokvkvi.supabase.co";
+const SUPABASE_KEY="sb_publishable_lGakUfjfRL9gcy9-XxW--Q_0b0HeSB7";
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const $=id=>document.getElementById(id);
+
+async function load(){
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session){$("login").classList.remove("hidden");$("app").classList.add("hidden");return;}
+  $("login").classList.add("hidden");$("app").classList.remove("hidden");
+
+  const {data:all,error}=await sb.from("visits").select("created_at,source,page").order("created_at",{ascending:false}).limit(1000);
+  if(error){$("loginError").textContent=error.message;return;}
+  const arr=all||[];
+  $("total").textContent=arr.length;
+  const d=new Date(); d.setHours(0,0,0,0);
+  $("today").textContent=arr.filter(x=>new Date(x.created_at)>=d).length;
+  const uniqueSources=new Set(arr.map(x=>x.source||"Direct"));
+  $("sources").textContent=uniqueSources.size;
+
+  $("rows").innerHTML=arr.slice(0,30).map(x=>{
+    const dt=new Date(x.created_at).toLocaleString("ar-EG");
+    return `<tr><td>${dt}</td><td>${esc(x.source||"Direct")}</td><td>${esc(x.page||"/")}</td></tr>`;
+  }).join("");
+}
+function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+$("loginBtn").onclick=async()=>{
+  $("loginError").textContent="";
+  const {error}=await sb.auth.signInWithPassword({email:$("email").value.trim(),password:$("password").value});
+  if(error){$("loginError").textContent="بيانات الدخول غير صحيحة أو الحساب غير متاح.";return;}
+  load();
+};
+$("logoutBtn").onclick=async()=>{await sb.auth.signOut();load();};
+sb.auth.onAuthStateChange(()=>load());
+load();
+</script>
+</body>
+</html>
